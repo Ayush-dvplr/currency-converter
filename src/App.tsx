@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Keyboard,
 } from 'react-native';
 import React from 'react';
 
@@ -14,8 +15,9 @@ import CurrencyButton from './components/CurrencyButton';
 
 export default function App() {
   const [input, setInput] = React.useState('');
-  const [output, setOutput] = React.useState('vb asdasdv');
-  const [error, setError] = React.useState('vsavadvvad');
+  const [selected, setSelected] = React.useState<Currency | null>(null);
+  const [output, setOutput] = React.useState('');
+  const [error, setError] = React.useState('');
 
   const handleChangeInput = (text: string) => {
     setError('');
@@ -23,14 +25,32 @@ export default function App() {
     setInput(text);
   };
 
-  const handleConvert = () => {
-    if (input) {
-      setOutput((Number(input) * 80).toString());
-    } else {
-      setError('Please enter the amount in Rupees');
-    }
+  const handleSelectCurrency = (currency: Currency) => {
+    setSelected(currency);
+    setOutput('');
+    setError('');
   };
 
+  const handleConvert = () => {
+    Keyboard.dismiss();
+    if (!input) {
+      setError('Please enter the amount in Rupees');
+      return;
+    }
+    if (!selected) {
+      setError('Please select a target currency');
+      return;
+    }
+
+    const amount = Number(input);
+    if (isNaN(amount)) {
+      setError('Invalid number');
+      return;
+    }
+
+    const converted = (amount * selected.value).toFixed(2);
+    setOutput(`₹ ${amount} = ${selected.symbol} ${converted} 🤑🤑`);
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#250d7aff' }}>
       <View style={styles.container}>
@@ -64,8 +84,13 @@ export default function App() {
           </View>
           <View style={styles.currencyContainer}>
             <View style={styles.flatList}>
-              {currencyByRupee.map(currency => (
-                <CurrencyButton key={currency.name} {...currency} />
+              {currencyByRupee.map(c => (
+                <CurrencyButton
+                  key={c.name}
+                  {...c}
+                  isSelected={selected?.name === c.name}
+                  onPress={() => handleSelectCurrency(c)}
+                />
               ))}
             </View>
           </View>

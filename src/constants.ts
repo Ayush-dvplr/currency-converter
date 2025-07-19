@@ -1,3 +1,10 @@
+export interface Currency {
+  name: string;
+  flag: string;
+  symbol: string;
+  value: number;
+}
+
 export const currencyByRupee: Currency[] = [
   {
     name: 'DOLLAR',
