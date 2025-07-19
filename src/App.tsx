@@ -14,9 +14,21 @@ import CurrencyButton from './components/CurrencyButton';
 
 export default function App() {
   const [input, setInput] = React.useState('');
+  const [output, setOutput] = React.useState('vb asdasdv');
+  const [error, setError] = React.useState('vsavadvvad');
 
   const handleChangeInput = (text: string) => {
+    setError('');
+    setOutput('');
     setInput(text);
+  };
+
+  const handleConvert = () => {
+    if (input) {
+      setOutput((Number(input) * 80).toString());
+    } else {
+      setError('Please enter the amount in Rupees');
+    }
   };
 
   return (
@@ -41,7 +53,9 @@ export default function App() {
                 maxLength={10}
               />
               <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Convert</Text>
+                <Text style={styles.buttonText} onPress={() => handleConvert()}>
+                  Convert
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -55,6 +69,18 @@ export default function App() {
               ))}
             </View>
           </View>
+          {error.length > 0 && (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Error</Text>
+              <Text style={styles.error}>{error}</Text>
+            </View>
+          )}
+          {output.length > 0 && (
+            <View style={styles.outputContainer}>
+              <Text style={styles.outputText}>Output</Text>
+              <Text style={styles.output}>{output}</Text>
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -88,6 +114,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
     justifyContent: 'space-evenly',
+    marginBottom: 20,
   },
   inputContainer: {
     gap: 15,
@@ -121,5 +148,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
+  },
+  errorContainer: {
+    padding: 10,
+  },
+  errorText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  error: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#c13636ff',
+  },
+  outputContainer: {
+    padding: 10,
+  },
+  outputText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  output: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#59ae7bff',
   },
 });
