@@ -1,12 +1,125 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 
+import { currencyByRupee } from './constants';
+import CurrencyButton from './components/CurrencyButton';
+
 export default function App() {
+  const [input, setInput] = React.useState('');
+
+  const handleChangeInput = (text: string) => {
+    setInput(text);
+  };
+
   return (
-    <View>
-      <Text style={{ color: 'red' }}>App</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#250d7aff' }}>
+      <View style={styles.container}>
+        <View style={styles.statusBarContainer}>
+          <StatusBar barStyle={'light-content'} />
+        </View>
+        <View style={styles.subcontainer}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Currency Converter</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Input</Text>
+            <View style={styles.inputBox}>
+              <TextInput
+                placeholder="Enter the amount in Rupees"
+                inputMode="numeric"
+                defaultValue={input}
+                onChangeText={text => handleChangeInput(text)}
+                style={styles.input}
+                maxLength={10}
+              />
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Convert</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Currency</Text>
+          </View>
+          <View style={styles.currencyContainer}>
+            <View style={styles.flatList}>
+              {currencyByRupee.map(currency => (
+                <CurrencyButton key={currency.name} {...currency} />
+              ))}
+            </View>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  statusBarContainer: {
+    backgroundColor: '#7155d6ff',
+    height: StatusBar.currentHeight,
+  },
+  container: {
+    backgroundColor: '#250d7aff',
+  },
+  subcontainer: {
+    padding: 10,
+  },
+  title: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  titleText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  currencyContainer: {},
+  flatList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'space-evenly',
+  },
+  inputContainer: {
+    gap: 15,
+    padding: 10,
+  },
+  inputText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  inputBox: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  input: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: '#7155d6ff',
+    padding: 10,
+    borderRadius: 10,
+    flex: 1,
+  },
+  button: {
+    backgroundColor: '#7155d6ff',
+    padding: 10,
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+  },
+});

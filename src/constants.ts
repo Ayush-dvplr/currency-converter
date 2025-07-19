@@ -23,12 +23,12 @@ export const currencyByRupee: Currency[] = [
     symbol: '¥',
     value: 0.009,
   },
-  {
-    name: 'RUPEE',
-    flag: '🇮🇳',
-    symbol: '₹',
-    value: 1,
-  },
+  //   {
+  //     name: 'RUPEE',
+  //     flag: '🇮🇳',
+  //     symbol: '₹',
+  //     value: 1,
+  //   },
   {
     name: 'YUAN',
     flag: '🇨🇳',
